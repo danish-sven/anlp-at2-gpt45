@@ -5,9 +5,6 @@ import codecs
 import json
 import re
 import platform
-import csv
-from itertools import combinations
-
 
 language = ['Korean', 'English', 'Japanese', 'Mandarin', 'Traditional Chinese',
             'Vietnamese', 'German', 'French', 'Other language', 'Spanish',
@@ -25,25 +22,33 @@ language = ['Korean', 'English', 'Japanese', 'Mandarin', 'Traditional Chinese',
 color_tags = ["f-red", "f-blue", "f-bold"]
 sline_tag = "sline]"
 
-# def main():
-#     assert platform.python_version_tuple()[0] == '3', 'This program supports only python3'
-#     args = parse_args()
-#     data_num = 0
-#     error_num = 0
-#     with codecs.open(args.data_path, 'r', encoding='utf8') as f:
-#         for line in f:
-#             data_num += 1
-#             try:
-#                 jsonData = json.loads(line, strict=False)
-#                 l2_langs, l1_lang = jsonData[2], jsonData[3]
-#                 orig_sents, corr_sents = jsonData[4], jsonData[5]
-#                 if (args.l1 == None or args.l1 == l1_lang) and args.l2 in l2_langs:
-#                     outputs = make_sent_pair(orig_sents, corr_sents, args)
-#                     for output in outputs:
-#                         print(output)
-#             except:
-#                 error_num += 1
-#                 pass
+
+def main():
+    assert platform.python_version_tuple()[0] == '3', 'This program supports only python3'
+    args = parse_args()
+    data_num = 0
+    error_num = 0
+    with codecs.open(args.data_path, 'r', encoding='utf8') as f:
+        for line in f:
+            data_num += 1
+            try:
+                jsonData = json.loads(line, strict=False)
+                l2_langs, l1_lang = jsonData[2], jsonData[3]
+                orig_sents, corr_sents = jsonData[4], jsonData[5]
+                if (args.l1 == None or args.l1 == l1_lang) and args.l2 in l2_langs:
+                    outputs = make_sent_pair(orig_sents, corr_sents, args)
+                    #for output in outputs:
+                        #print(output)
+            except:
+                error_num += 1
+                pass
+
+    print(f"Total lines processed: {data_num}")
+    print(f"Total errors: {error_num}")
+
+    for (l1, l2), outputs in data.items():
+        save_to_csv(l1, l2, outputs)
+
 def save_to_csv(l1, l2, outputs):
     filename = f"{l1}_to_{l2}.csv"
     with open(filename, mode='w', encoding='utf-8', newline='') as csvfile:
@@ -55,46 +60,6 @@ def save_to_csv(l1, l2, outputs):
             csv_writer.writerow([original, corrected])
     print(f"Saving {filename}")
     print(f"Total rows: {len(outputs)}")
-
-def main():
-    args = parse_args()
-    data = {}
-    error_num = 0
-    data_num = 0
-
-    with codecs.open(args.data_path, 'r', encoding='utf8') as f:
-        for line in f:
-            data_num += 1
-            try:
-                jsonData = json.loads(line, strict=False)
-                # l2_langs, l1_lang = jsonData[2], jsonData[3]
-                l2_langs, l1_lang = jsonData[2].split(', '), jsonData[3]
-
-                orig_sents, corr_sents = jsonData[4], jsonData[5]
-                # print(f"l1_lang: {l1_lang}, l2_langs: {l2_langs}")
-
-
-                # Only process language combinations specified in the language list
-                if l1_lang in language:
-                    for l2_lang in l2_langs:
-                        if l2_lang in language:
-                            print(f"Processing language pair: {l1_lang} -> {l2_lang}")
-                            outputs = make_sent_pair(orig_sents, corr_sents, args)
-                            if (l1_lang, l2_lang) in data:
-                                data[(l1_lang, l2_lang)].extend(outputs)
-                            else:
-                                data[(l1_lang, l2_lang)] = outputs
-            except:
-                error_num += 1
-                pass
-
-    print(f"Total lines processed: {data_num}")
-    print(f"Total errors: {error_num}")
-
-    for (l1, l2), outputs in data.items():
-        save_to_csv(l1, l2, outputs)
-
-
 
 def make_sent_pair(orig_sents, corr_sents, args):
     outputs = []
@@ -173,34 +138,21 @@ def replace_tags(s):
     s = s.replace("[/青]", "[/f-blue]")
     return s
 
-# def parse_args():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("-d", "--data", dest="data_path", type=str, metavar='<str>', required=True, help="The path to the data set")
-#     parser.add_argument("-l2", "--learn-lang", dest="l2", type=str, metavar='<str>', required=False, default='English', help="L2 language")
-#     parser.add_argument("-l1", "--native-lang", dest="l1", type=str, metavar='<str>', required=False, default=None, help="L1 language")
-#     parser.add_argument("-tags", "--remain-tags", dest="tags", default=False, action='store_true', help="If you want to remain tags (e.g. [f-red]), please use this option")
-
-#     args = parser.parse_args()
-
-#     assert args.l2 in language
-#     if args.l1 != None:
-#         assert args.l1 in language
-
-#     return args
-
-# def parse_args():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("-d", "--data", dest="data_path", type=str, metavar='<str>', required=True, help="The path to the data set")
-#     parser.add_argument("-tags", "--remain-tags", dest="tags", default=False, action='store_true', help="If you want to remain tags (e.g. [f-red]), please use this option")
-
-#     args = parser.parse_args()
-#     return args
-
 def parse_args():
-    parser = argparse.ArgumentParser(description='Extract error correction pairs from Lang-8 data')
-    parser.add_argument('-d', '--data-path', required=True, help='path to the input .dat file')
-    return parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--data", dest="data_path", type=str, metavar='<str>', required=True, help="The path to the data set")
+    parser.add_argument("-l2", "--learn-lang", dest="l2", type=str, metavar='<str>', required=False, default='English', help="L2 language")
+    parser.add_argument("-l1", "--native-lang", dest="l1", type=str, metavar='<str>', required=False, default=None, help="L1 language")
+    parser.add_argument("-tags", "--remain-tags", dest="tags", default=False, action='store_true', help="If you want to remain tags (e.g. [f-red]), please use this option")
+
+    args = parser.parse_args()
+
+    assert args.l2 in language
+    if args.l1 != None:
+        assert args.l1 in language
+
+    return args
+
 
 if __name__ == "__main__":
     main()
-
