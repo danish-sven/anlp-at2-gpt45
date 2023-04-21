@@ -69,7 +69,7 @@ def main():
     df = pd.DataFrame(list(zip(original_sentences, corrected_sentences)), columns=['original', 'corrected'])
     print(args.l1)
     print(args.l2)
-    df.to_csv("2. Raw Data/"+args.l1+" to "+args.l2+".csv", index=False)
+    df.to_csv("2. Raw Data/"+args.l1+"_to_"+args.l2+".csv", index=False)
 
 
 # def make_sent_pair(orig_sents, corr_sents, args):
