@@ -1,0 +1,33 @@
+Example:
+
+Original: Hi Amy (student), how you doing? [(
+Original 2: Hi Amy, how you doing? [(
+Corrected 1: Hi Amy, how (are) you doing? [(
+Corrected 2: Hi Amy, how are you doing? [(
+Corrected 3: Hi Amy (student), how are you doing? [(
+Corrected 4: Hi Amy, how (are is supposed to be here) you doing? [(
+
+Parenthesis () or Brackets []
+
+Step 1: Remove any words inside () that match inside Original AND Corrected
+Original: Hi Amy (student), how you doing? [(
+Corrected3: Hi Amy (student), how are you doing? [(
+
+Solution: 
+-Find the words inside parenthesis for each row.
+If parenthesis with words exists in Original AND Corrected:       
+    If the words are the same,                                    [Corrected 3]
+        Then we delete the content and ()
+    If the words are not the same,                                [Corrected 1]
+        Then remove the entire row
+If parethesis with words exists in Original but NOT Corrected:    [Corrected 2]
+    Then, delete the content and ()
+If parenthesis with words exists in Corrected but not Original:   
+    If there is only one word inside the corrected (),             [Original 2, Corrected 1]
+        Then, delete () and keep the word
+    But If, there are more than one word inside corrected (),      [Original 2, Corrected 4]
+        Then, delete entire row
+
+(Must be last step)
+If there are any remaining [](), 
+    Then delete []() but leave the sentence
