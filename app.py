@@ -42,14 +42,14 @@ original = st.text_input('', '',label_visibility="collapsed") # add a textbox to
 go = st.button('Generate')   # add a 'Generate button' to run the selected language model
 
 # Define the output directory
-if option_model=='GPT-2' and option_lang = 'Japanese':
+if option_model=='GPT-2' and option_lang == 'Japanese':
     output_dir = "7. Models/"+'80K_GPT2_v2'+"/"
 
-elif option_model == 'GPT-2' and option_lang = 'Mandarin':
-    output_dir = "7. Models/"+'GPT2_MDN_40K_v2'+"/"
+elif option_model == 'GPT-2' and option_lang == 'Mandarin':
+    output_dir = "7. Models/"+'40K_GPT2_MDN_v2'+"/"
 
-elif option_model == 'BART' and option_lang = 'Mandarin':
-    output_dir = "7. Models/"+'60K-BART-MDN-v2'+"/"
+elif option_model == 'BART' and option_lang == 'Mandarin':
+    output_dir = "7. Models/"+'60K_BART_MDN_v2'+"/"
 
 else:
     output_dir = "7. Models/"+'80K_BART_v2'+"/"

@@ -49,11 +49,11 @@ if option_model=='GPT-2':
     model_dir = "amyyang/80K-GPT2-v2"
     token_dir = "amyyang/token-80K-GPT2-v2"
 
-elif option_model == 'GPT-2' and option_lang = 'Mandarin':
+elif option_model == 'GPT-2' and option_lang == 'Mandarin':
     model_dir = "amyyang/40K-GPT2-MDN-v2"
     token_dir = "amyyang/token-40K-GPT2-MDN-v2" 
 
-elif option_model == 'BART' and option_lang = 'Mandarin':
+elif option_model == 'BART' and option_lang == 'Mandarin':
     model_dir = "amyyang/60K-BART-MDN-v2"
     token_dir = "amyyang/token-60K-BART-MDN-v2" 
 
