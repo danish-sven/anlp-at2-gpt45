@@ -45,7 +45,7 @@ original = st.text_input('', '',label_visibility="collapsed") # add a textbox to
 go = st.button('Generate')   # add a 'Generate button' to run the selected language model
 
 # Define the output directory
-if option_model=='GPT-2':
+if option_model=='GPT-2' and option_lang == 'Japanese':
     model_dir = "amyyang/80K-GPT2-v2"
     token_dir = "amyyang/token-80K-GPT2-v2"
 
