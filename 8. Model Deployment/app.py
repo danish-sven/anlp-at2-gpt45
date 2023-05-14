@@ -16,7 +16,7 @@ st.sidebar.text("") # add line space
 
 option_lang = st.sidebar.selectbox(
     'What is your native language?',
-    ('Japanese', 'Madarin'))   # add a dropdown list for native languages
+    ('Japanese', 'Mandarin'))   # add a dropdown list for native languages
 
 st.sidebar.write('You selected:', option_lang)  # display the selected native language
 
@@ -48,6 +48,14 @@ go = st.button('Generate')   # add a 'Generate button' to run the selected langu
 if option_model=='GPT-2':
     model_dir = "amyyang/80K-GPT2-v2"
     token_dir = "amyyang/token-80K-GPT2-v2"
+
+elif option_model == 'GPT-2' and option_lang = 'Mandarin':
+    model_dir = "amyyang/40K-GPT2-MDN-v2"
+    token_dir = "amyyang/token-40K-GPT2-MDN-v2" 
+
+elif option_model == 'BART' and option_lang = 'Mandarin':
+    model_dir = "amyyang/60K-BART-MDN-v2"
+    token_dir = "amyyang/token-60K-BART-MDN-v2" 
 
 else:
     model_dir = "amyyang/80K-BART-v2"
